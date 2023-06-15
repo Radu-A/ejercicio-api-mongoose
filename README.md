@@ -5,7 +5,6 @@ Aplicación que permite al usuario realizar métodos GET y POST que aplican camb
 ## Tabla de contenidos
 
 - [Objetivo](#objetivo)
-  - [Fases](#fases)
   - [Endpoints](#endpoints)
   - [Links](#links)
 - [Proceso](#Proceso)
@@ -14,68 +13,38 @@ Aplicación que permite al usuario realizar métodos GET y POST que aplican camb
 
 ## Objetivo
 
-- Podrán realizarse 3 consultas a través de solicitudes GET: ver todos los productos, ver todos las entradas, buscar un autor por su email o buscar todas las entradas de un autor por su email.
-- Podrán introducirse nuevos autores y nuevas entradas a través de solicitudes POST.
-- Podrán modificarse autores o entradas ya existentes a través de solicitudes PUT.
-- Podrán eliminarse tanto autores como entradas a través de solicitud DELETE, teniendo en cuenta que al eliminar un autor se eliminarán todas sus entradas.
+- Podrán realizarse 4 consultas a través de solicitudes GET: ver todos los productos, ver todos las entradas, buscar un proveedor por su CIF o buscar todos los productos de un proveedor por su CIF.
+- Podrán introducirse nuevos proveedores y nuevos productos a través de solicitudes POST.
 
 ### Endpoints
 
 GET
-- Para obtener todas las entradas: https://api-sql-mmm3.onrender.com/api/entries
-- Para obtener las entradas de un autor: https://api-sql-mmm3.onrender.com/api/entries?email=<author_email>
-- Para obtener todos los autores: https://api-sql-mmm3.onrender.com/api/authors
-- Para obtener un autor por su email: https://api-sql-mmm3.onrender.com/api/authors?email=<author_email>
-
----API_KEY---
+- Para obtener todas los productos: https://api-mongoose.onrender.com/api/products
+- Para obtener los productos de un proveedor: https://api-mongoose.onrender.com/api/products/<CIF>
+- Para obtener todos los proveedores: https://api-mongoose.onrender.com/api/providers
+- Para obtener un proveedor por su CIF: https://api-mongoose.onrender.com/api/providers/<CIF>
 
 POST
-- Crear un nuevo autor: https://api-sql-mmm3.onrender.com/api/authors. En el body se incluirá:
-{ 
-  "name": "", 
-  "surname": "",
-  "email": "",
-  "image": ""
+- Crear un nuevo proveedor: https://api-mongoose.onrender.com/api/providers. En el body se incluirá:
+{
+    "company_name": "",
+    "CIF": "",
+    "address": "",
+    "url_web":""
 }
-- Crear una nueva entrada: https://api-sql-mmm3.onrender.com/api/entries. En el body se incluirá:
+- Crear un nuevo producto: https://api-sql-mmm3.onrender.com/api/entries. En el body se incluirá:
 { 
     "title": "", 
-    "content": "",
-    "email": "",
-    "category": ""
-}
-
-PUT
-- Modificar un autor: https://api-sql-mmm3.onrender.com/api/authors. En el body se incluirá:
-{ 
-  "email": "",
-  "name": "", 
-  "surname": "",
-  "image": ""
-}
-- Modificar una entrada entrada: https://api-sql-mmm3.onrender.com/api/entries. En el body se incluirá:
-{ 
-    "title": "", 
-    "newTitle": "", 
-    "content": "",
-    "email": "",
-    "category": ""
-}
-
-DELETE
-- Eliminar un autor: https://api-sql-mmm3.onrender.com/api/authors. En el body se incluirá:
-{
-  "email": ""
-}
-- Eliminar una entrada: https://api-sql-mmm3.onrender.com/api/entries. En el body se incluirá:
-{
-  "title": ""
+    "providerCIF": "",
+    "price": ,
+    "description": "",
+    "image": ""
 }
 
 ### Links
 
-- Repositorio: [ejercicio-api-sql](https://github.com/Radu-A/ejercicio-api-sql)
-- Live Site: [Demo](https://api-sql-mmm3.onrender.com)
+- Repositorio: [ejercicio-api-mongoose](https://github.com/Radu-A/ejercicio-api-mongoose)
+- Live Site: [Demo](https://api-mongoose.onrender.com/)
 
 ## Proceso
 
@@ -84,17 +53,18 @@ DELETE
 - Javascript
 - Node
 - Express
-- Docker y PgAdmin en fase de desarrollo
-- ElephantSql
+- Docker y MongoDb Compass en fase de desarrollo
+- Atlas
 - Render
 
 ### Puntos clave
 
-- Creación de base de datos y de las tablas correspondientes, teniendo en cuenta el modelo relacional y la eliminación en cascada
-- Conexión a la base de datos desde express mediante los módulos proporcionados por "pg" (PostgreSQL)
+- Creación de base de datos y de las colecciones correspondientes
+- Relacionar los dos colecciones a traves de los "Schemas" pertenecientes a Mongoose
+- Conexión a la base de datos desde express mediante los módulos proporcionados por Mongoose
+- Emplear el método "populate" de mongoose para traer los datos del proveedor junto con el producto
 - Subdivisión de módulos propios para ordenar el código de la app
 - Enrutamiento y empleo de middlewares
 - Uso de morgan para visualizar logs
-- Checkeo de API_KEY en metodos POST, PUT y DELETE
-- Despliegue de la base de datos en ElephantSQL
+- Despliegue de la base de datos en Atlas
 - Despliegue de la aplicación en Render
