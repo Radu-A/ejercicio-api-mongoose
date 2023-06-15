@@ -5,9 +5,10 @@ const Provider = require('../models/providers');
 require('../utils/db_mongo');
 
 const getProducts = async (req, res) => {
-    if (req.params.id) {
+    if (req.params.CIF) {
         try {
-            const data = await Product.find({provider: req.params.id}, '-_id -__v').populate('provider').exec();
+            const provider = await Provider.find({CIF: req.params.CIF}, '-__v');
+            const data = await Product.find({provider: provider[0]._id}, '-_id -__v').populate('provider').exec();
             res.status(200).json(data);
         } catch (error) {
             res.status(404).json({
