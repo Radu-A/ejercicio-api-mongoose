@@ -10,6 +10,9 @@ const getProducts = async (req, res) => {
             const data = await Product.find({provider: req.params.id}, '-_id -__v').populate('provider').exec();
             res.status(200).json(data);
         } catch (error) {
+            res.status(404).json({
+                "Error": `${error}`
+            })
             console.log(error);
         }
     } else {
@@ -17,7 +20,7 @@ const getProducts = async (req, res) => {
             const data = await Product.find({}, '-_id -__v').populate('provider').exec();
             res.status(200).json(data);
         } catch (error) {
-            res.status(400).json({
+            res.status(404).json({
                 "Error": `${error}`
             })
             console.log(error);
@@ -26,25 +29,26 @@ const getProducts = async (req, res) => {
 }
 
 // { 
-//     "title": "Monstera", 
-//     "provider": "6488ae780602c2c8d8596cbf",
+//     "title": "Prueba POST products con CIF 2", 
+//     "providerCIF": "G564354622",
 //     "price": 15,
-//     "description": "Costilla de Adán de tamaño mediano",
+//     "description": "Provider Amorodos G564354622",
 //     "image": "planta.jpg"
 // }
 
 const createProduct = async (req, res) => {
-    // No consigo realizar la condicion adecuada para dar con un body vacío
-    if (req.body === {}) {
-        const { title, provider, price, description, image } = req.body;
+    try {
+        const { title, providerCIF, price, description, image } = req.body;
+        const provider = await Provider.find({CIF: providerCIF}, '-__v');
+        console.log(provider[0]._id);
         const newProduct = new Product({
                     title: title,
-                    provider: provider,
+                    provider: provider[0]._id,
                     price: price,
                     description: description,
                     image: image,
                 })
-        try {
+    try {
             const data = await newProduct.save();
             res.status(201).json({"message": "producto creado", "product":`${newProduct.title}`});
         } catch (error) {
@@ -53,10 +57,13 @@ const createProduct = async (req, res) => {
             })
             console.log(error);
         }
-    } else {
-        res.status(400).send('Error: el cuerpo de la petición está vacío')
+    } catch (error) {
+        res.status(404).json({
+            "Mensssage": "El CIF proporcionado no existe en la base de datos",
+            "Error": `${error}`
+        })
+        console.log(error);
     }
-
 }
 
 module.exports = {

@@ -7,8 +7,11 @@ const getProviders = async (req, res) => {
         try {
             const data = await Provider.find({CIF: req.params.CIF}, '-__v');
             res.status(200).json(data[0]);
-            console.log(data[0]);
+            console.log(data[0]._id);
         } catch (error) {
+            res.status(404).json({
+                "Error": `${error}`
+            })
             console.log(error);
         }
     } else {
@@ -16,6 +19,9 @@ const getProviders = async (req, res) => {
             const data = await Provider.find({}, '-__v');
             res.status(200).json(data);
         } catch (error) {
+            res.status(404).json({
+                "Error": `${error}`
+            })
             console.log(error);
         }
     }
