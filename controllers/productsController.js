@@ -53,7 +53,7 @@ const createProduct = async (req, res) => {
             const data = await newProduct.save();
             res.status(201).json({"message": "producto creado", "product":`${newProduct.title}`});
         } catch (error) {
-            res.status(400).json({
+            res.status(404).json({
                 "Error": `${error}`
             })
             console.log(error);

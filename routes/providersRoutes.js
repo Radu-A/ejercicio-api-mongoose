@@ -3,7 +3,7 @@ const providersController = require('../controllers/providersController');
 const providersRouter = express.Router();
 
 providersRouter.get('/:CIF?', providersController.getProviders);
-providersRouter.post('/', providersController.createProvider);
+providersRouter.post('/create', providersController.createProvider);
 
 
 module.exports = providersRouter;

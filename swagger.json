@@ -1,0 +1,309 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Products / Providers - Mongoose API 1.0",
+    "description": "Aplicación que permite al usuario realizar métodos GET y POST que aplican cambios sobre una base de datos MongoDB.\n\nObjetivo:\nPodrán realizarse 4 consultas a través de solicitudes GET: ver todos los productos, ver todos las entradas, buscar un proveedor por su CIF o buscar todos los productos de un proveedor por su CIF.\n\nPodrán introducirse nuevos proveedores y nuevos productos a través de solicitudes POST.\n\nGithub link:\n- [Repositorio de la API](https://github.com/Radu-A/ejercicio-api-mongoose)",
+    "termsOfService": "https://github.com/Radu-A/ejercicio-api-mongoose",
+    "contact": {
+      "email": "elcastravete@gmail.com"
+    },
+    "version": "1.0.11"
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "servers": [
+    {
+      "url": "https://api-mongoose.onrender.com"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Products / Providers",
+      "description": "Mongoose API",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "productos",
+      "description": "Peticiones sobre productos",
+      "externalDocs": {
+        "description": "Find out more about our store",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "proveedores",
+      "description": "Operations about user"
+    }
+  ],
+  "paths": {
+    "/api/products": {
+      "get": {
+        "tags": [
+          "productos"
+        ],
+        "summary": "Devuelve todos los productos",
+        "description": "Devuelve un array con todos los productos",
+        "operationId": "getProducts",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error: producto no encontrado"
+          }
+        }
+      }
+    },
+    "/api/products/{CIF}": {
+      "get": {
+        "tags": [
+          "productos"
+        ],
+        "summary": "Devuelve productos por proveedor",
+        "description": "Devuelve todos los productos de un proveedor por su CIF",
+        "operationId": "getProducts",
+        "parameters": [
+          {
+            "name": "CIF",
+            "in": "path",
+            "description": "El CIF que se usará par abuscar el _id del proveedor",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error: producto no encontrado"
+          }
+        }
+      }
+    },
+    "/api/products/create": {
+      "post": {
+        "tags": [
+          "productos"
+        ],
+        "summary": "Crear un producto",
+        "description": "Crea un producto nuevo con el CIF del proveedor",
+        "operationId": "createProduct",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/createdProduct"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/api/providers": {
+      "get": {
+        "tags": [
+          "proveedores"
+        ],
+        "summary": "Devuelve todos los proveedores",
+        "description": "Devuelve un array con todos los proveedores",
+        "operationId": "getProvider",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Provider"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/providers/{CIF}": {
+      "get": {
+        "tags": [
+          "proveedores"
+        ],
+        "summary": "Devuelve un proveedor",
+        "description": "Devuelve un proveedor por su CIF",
+        "operationId": "getProvider",
+        "parameters": [
+          {
+            "name": "CIF",
+            "in": "path",
+            "description": "The name that needs to be fetched. Use user1 for testing. ",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Provider"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/api/providers/create": {
+      "post": {
+        "tags": [
+          "proveedores"
+        ],
+        "summary": "Crear proveedor",
+        "description": "Es necesario disponer de API Key",
+        "operationId": "createProvider",
+        "requestBody": {
+          "description": "Created user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Provider"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/createdProvider"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Croqueta"
+          },
+          "providerCIF": {
+            "type": "string",
+            "example": "H64758433"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int32",
+            "example": 7.6
+          },
+          "description": {
+            "type": "string",
+            "example": "Comida casera"
+          },
+          "image": {
+            "type": "string",
+            "description": "url",
+            "example": "http://mifoto.jpg"
+          }
+        }
+      },
+      "createdProduct": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "producto creado"
+          },
+          "product": {
+            "type": "object"
+          }
+        }
+      },
+      "Provider": {
+        "type": "object",
+        "properties": {
+          "company_name": {
+            "type": "string",
+            "example": "La Bombilla"
+          },
+          "CIF": {
+            "type": "string",
+            "example": "H75645374"
+          },
+          "address": {
+            "type": "string",
+            "example": "Olmos 10"
+          },
+          "url_web": {
+            "type": "string",
+            "example": "www.labombilla.gal"
+          }
+        }
+      },
+      "createdProvider": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "proveedor creado"
+          },
+          "product": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

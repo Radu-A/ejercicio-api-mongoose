@@ -3,7 +3,7 @@ const productsController = require('../controllers/productsController')
 const productsRouter = express.Router();
 
 productsRouter.get('/:CIF?', productsController.getProducts);
-productsRouter.post('/', productsController.createProduct);
+productsRouter.post('/create', productsController.createProduct);
 
 
 module.exports = productsRouter;
